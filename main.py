@@ -1,3 +1,4 @@
+
 from time import sleep
 import pandas as pd
 import urllib.request, urllib.parse, urllib.error
@@ -44,7 +45,18 @@ if(len(error) != 0):
     print("Username's not retrived due to error :")
     [print(f'\t{i}') for i in error]
 print('\n\n\nSaving data to IG_Retrived.xlsx...')
-df['Count'] = f_list
+#for i in
+q_list = list()
+for i in f_list:
+    if(i[-1] == 'm'):
+        a = float(i[:-1]) * 1000000
+        q_list.append(a)
+    elif(i[-1] == 'k'):
+        a = float(i[:-1]) * 1000
+        q_list.append(a)
+    else:
+        q_list.append(i)
+df['Count'] = q_list
 df.to_excel("IG_Retrived.xlsx")
 sleep(5)
 print("Data Saved.\nPress enter key to exit...")
