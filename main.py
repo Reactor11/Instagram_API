@@ -3,6 +3,7 @@ import pandas as pd
 import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 import ssl
+import json
 
 df = pd.read_excel('IG.xlsx',usecols=0)
 #print(df.columns)
@@ -12,6 +13,7 @@ fname_list = list(map(str.strip, fname_list))
 f_list = list()
 flg_list = list()
 post_list = list()
+des_list = list()
 # print(fname_list)
 count = 0
 error = []
@@ -35,7 +37,15 @@ for i in range(len(fname_list)):
             f_list.append(a[0])
             flg_list.append(a[2])
             post_list.append(a[4])
-
+        tags = soup.find_all('script',attrs={'type':"application/ld+json"})
+        if(len(tags)!=0):
+            des = json.loads(tags[0].text.strip())
+            if 'description' in des.keys():
+                des_list.append(des['description'])
+            else:
+                des_list.append('n/a')
+        else:
+            des_list.append('n/a')
         print(f"User Name : {fname_list[i]} \t No. of follower's = {follower} \t No. of following's = {following} \t No. of Posts = {posts}" )
         if(count%10 == 0):
             print('\n\nDo no close the window \n\n')
@@ -45,6 +55,7 @@ for i in range(len(fname_list)):
         f_list.append('n/a')
         flg_list.append('n/a')
         post_list.append('n/a')
+        des_list.append('n/a')
         error.append(fname_list[i].strip())
         continue
 
@@ -90,6 +101,7 @@ for i in post_list:
 df['Followers'] = q_list
 df['Followings'] = f_temp
 df['Posts'] = post_temp
+df['Description'] = des_list
 df.to_excel("IG_Retrived.xlsx",index=False)
 sleep(5)
 print("Data Saved.\nPress enter key to exit...")
