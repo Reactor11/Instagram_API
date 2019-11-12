@@ -1,5 +1,5 @@
 # Instagram_API
-This API gets the count of followers of provided usernames in excel sheet.
+This API gets the count of followers, followings, posts of provided usernames in excel sheet.
 
 ### There are three files in this repository :  
 1. IG.xlsx  :  Put the usernames which you want to retrive followers, followings, posts don't change the first row.
